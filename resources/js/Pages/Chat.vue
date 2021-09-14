@@ -20,7 +20,7 @@
                             >
                                 <p class="flex items-center">
                                     {{ user.name }}
-                                    <span class="ml-2 w-2 h-2 bg-blue-500 rounded-full"></span>
+                                    <span v-if="user.notification" class="ml-2 w-2 h-2 bg-blue-500 rounded-full"></span>
                                 </p>
                             </li>
                         </ul>
@@ -68,92 +68,126 @@
 </template>
 
 <script>
-    import { defineComponent } from 'vue'
-    import AppLayout from '@/Layouts/AppLayout.vue'
-    import moment from 'moment';
-    import store from '../store';
-    import createPersistedState from 'vuex-persistedstate'
+import { defineComponent, reactive, toRefs } from 'vue'
+import AppLayout from '@/Layouts/AppLayout.vue'
+import moment from 'moment';
+import store from '../store';
+import createPersistedState from 'vuex-persistedstate'
 
-    export default defineComponent({
-        components: {
-            AppLayout,
-        },
-        plugins: [createPersistedState()],
-        computed: {
-            user() {
-                return store.state.user;
-            }
-        },
-        data() {
-            return {
-                users: [],
-                messages: [],
-                userActive: null,
-                message: ''
-            }
-        },
-        methods: {
-            scrollToBottom() {
-                if (this.messages.length) {
-                    document.querySelectorAll('.message:last-child')[0].scrollIntoView();
-                }
-            },
-            async loadMessages(userId) {
-
-                axios.get(`api/users/${userId}`).then(response => {
-                    this.userActive = response.data.user
-                });
-
-                await axios.get(`api/messages/${userId}`).then(response => {
-                    this.messages = response.data.messages
-                });
-
-                this.scrollToBottom();
-
-            },
-            formatDate(arg) {
-                moment.locale('pt-br');
-
-                if (arg) {
-                    return moment(arg).format('DD/MM/YYYY hh:mm');
-                }
-
-                return null;
-            },
-            async sendMessage() {
-                if (!this.message) {
-                    alert('Write a message!');
-                    document.getElementById("messageInput").focus();
-                    return false;
-                }
-
-                await axios.post(`api/messages/store`, {
-                    'content': this.message,
-                    'to': this.userActive.id
-                }).then(response => {
-                    this.messages.push({
-                        'from': this.user.id,
-                        'to': this.userActive.id,
-                        'content': this.message,
-                        'created_at': new Date().toISOString(),
-                        'updated_at': new Date().toISOString(),
-                    })
-
-                    this.message = ''
-                });
-
-                this.scrollToBottom()
-            }
-        },
-        mounted() {
-            axios.get('api/users').then(response => {
-                this.users = response.data.users
-            });
-        },
-        props: {
-            auth: Object
+export default defineComponent({
+    components: {
+        AppLayout,
+    },
+    plugins: [createPersistedState()],
+    computed: {
+        user() {
+            return store.state.user;
         }
-    })
+    },
+    data() {
+        return {
+            users: reactive([]),
+            messages: reactive([]),
+            userActive: reactive(null),
+            message: reactive('')
+        }
+    },
+    methods: {
+        scrollToBottom() {
+            if (this.messages.length) {
+                document.querySelectorAll('.message:last-child')[0].scrollIntoView();
+            }
+        },
+        async loadMessages(userId) {
+
+            axios.get(`api/users/${userId}`).then(response => {
+                this.userActive = response.data.user
+            });
+
+            await axios.get(`api/messages/${userId}`).then(response => {
+                this.messages = response.data.messages
+            });
+
+            const user = this.users.filter((user) => {
+                if (user.id === userId) {
+                    return user;
+                }
+            })
+
+            console.log(user)
+            if (user) {
+                user[0].notification.value = false;
+            }
+
+            console.log(callback)
+
+            this.scrollToBottom();
+
+        },
+        formatDate(arg) {
+            moment.locale('pt-br');
+
+            if (arg) {
+                return moment(arg).format('DD/MM/YYYY hh:mm');
+            }
+
+            return null;
+        },
+        async sendMessage() {
+            if (!this.message) {
+                alert('Write a message!');
+                document.getElementById("messageInput").focus();
+                return false;
+            }
+
+            await axios.post(`api/messages/store`, {
+                'content': this.message,
+                'to': this.userActive.id
+            }).then(response => {
+                this.messages.push({
+                    'from': this.user.id,
+                    'to': this.userActive.id,
+                    'content': this.message,
+                    'created_at': new Date().toISOString(),
+                    'updated_at': new Date().toISOString(),
+                })
+
+                this.message = ''
+            });
+
+            this.scrollToBottom()
+        }
+    },
+    mounted() {
+        axios.get('api/users').then(response => {
+            this.users = response.data.users
+        });
+
+        Echo.private(`user.${this.user.id}`).listen('.SendMessage', async (callback) => {
+            
+            if (this.userActive && this.userActive.id === callback.message.from) {
+                await this.messages.push(callback.message);
+                this.scrollToBottom();
+                return;
+            }
+
+            const user = this.users.filter((user) => {
+                if (user.id === callback.message.from) {
+                    return user;
+                }
+            })
+
+            if (user) {
+                vuser[0].notification.value = true;
+            }
+
+            console.log(callback)
+        });
+    },
+    props: {
+        auth: Object
+    }
+})
 </script>
 
 <style>

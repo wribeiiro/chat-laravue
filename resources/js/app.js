@@ -9,7 +9,7 @@ const appName = window.document.getElementsByTagName('title')[0]?.innerText || '
 
 store.dispatch('userStateAction');
 
-createInertiaApp({
+const vm = createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => require(`./Pages/${name}.vue`),
     setup({ el, app, props, plugin }) {
