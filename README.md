@@ -1,4 +1,4 @@
-![Captura de tela de 2021-09-14 23-54-26](https://user-images.githubusercontent.com/20648572/133362738-ae1ac6de-36e9-4458-8549-e89360d57da7.png)
+![Captura de tela de 2021-09-14 23-55-44](https://user-images.githubusercontent.com/20648572/133362860-5a8ac2e5-b426-4da7-84f7-6e0d023e32d6.png)
 
 
 <hr>
