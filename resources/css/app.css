@@ -2,10 +2,12 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-.messageFromMe {
-    @apply bg-indigo-300 bg-opacity-25;
-}
+@layer components {
+    .messageFromMe {
+        @apply bg-indigo-300 bg-opacity-25;
+    }
 
-.messageToMe {
-    @apply bg-gray-300 bg-opacity-25;
+    .messageToMe {
+        @apply bg-gray-400 bg-opacity-25;
+    }
 }

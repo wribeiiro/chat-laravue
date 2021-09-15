@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 
-export default defineComponent({
+export default {
         emits: ['close'],
 
         props: {
@@ -94,5 +94,5 @@ export default defineComponent({
                 }[this.maxWidth]
             }
         }
-    })
+    }
 </script>

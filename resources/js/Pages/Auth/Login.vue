@@ -1,6 +1,4 @@
 <template>
-    <Head title="Log in" />
-
     <jet-authentication-card>
         <template #logo>
             <jet-authentication-card-logo />
@@ -31,9 +29,9 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
                     Forgot your password?
-                </Link>
+                </inertia-link>
 
                 <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Log in
@@ -44,27 +42,23 @@
 </template>
 
 <script>
-    import { defineComponent } from 'vue'
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue'
-    import JetButton from '@/Jetstream/Button.vue'
-    import JetInput from '@/Jetstream/Input.vue'
-    import JetCheckbox from '@/Jetstream/Checkbox.vue'
-    import JetLabel from '@/Jetstream/Label.vue'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors.vue'
-    import { Head, Link } from '@inertiajs/inertia-vue3';
+    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
+    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
+    import JetButton from '@/Jetstream/Button'
+    import JetInput from '@/Jetstream/Input'
+    import JetCheckbox from '@/Jetstream/Checkbox'
+    import JetLabel from '@/Jetstream/Label'
+    import JetValidationErrors from '@/Jetstream/ValidationErrors'
 
-    export default defineComponent({
+    export default {
         components: {
-            Head,
             JetAuthenticationCard,
             JetAuthenticationCardLogo,
             JetButton,
             JetInput,
             JetCheckbox,
             JetLabel,
-            JetValidationErrors,
-            Link,
+            JetValidationErrors
         },
 
         props: {
@@ -94,5 +88,5 @@
                     })
             }
         }
-    })
+    }
 </script>

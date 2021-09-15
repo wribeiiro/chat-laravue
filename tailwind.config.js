@@ -18,5 +18,10 @@ module.exports = {
         },
     },
 
+    variants: {
+        opacity: ['responsive','hover','focus','disabled'],
+        cursos: ['hover'],
+    },
+    darkMode: 'class',
     plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };

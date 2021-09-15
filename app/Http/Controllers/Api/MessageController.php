@@ -5,56 +5,32 @@ namespace App\Http\Controllers\Api;
 use App\Events\Chat\SendMessage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
+use Symfony\Component\httpFoundation\Response;
+
+
 use App\Models\User;
 use App\Models\Message;
-use Auth;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Event;
 
 class MessageController extends Controller
 {
-
-    public function listMessages(User $user)
-    {
-        $userFrom = Auth::user()->id;
-        $userTo = $user->id;
-
-        /**
-         * [from = $userFrom && to = $userTo]
-         * OR
-         * [from = $userTo && to = $userFrom]
-         */
-        $messages = Message::where(
-            function ($query) use ($userFrom, $userTo) {
-                $query->where([
-                    'from' => $userFrom,
-                    'to' => $userTo
-                ]);
-            }
-        )->orWhere(
-            function ($query) use ($userFrom, $userTo) {
-                $query->where([
-                    'from' => $userTo,
-                    'to' => $userFrom
-                ]);
-            }
-        )->orderBy(
-            'created_at', 
-            'ASC'
-        )->get();
-
-        return response()->json([
-            'messages' => $messages,
-            'status' => Response::HTTP_OK
-        ], Response::HTTP_OK);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         //
     }
@@ -72,13 +48,8 @@ class MessageController extends Controller
         $message->to = $request->to;
         $message->content = filter_var($request->content, FILTER_SANITIZE_STRIPPED);
         $message->save();
-        
-        Event::dispatch(new SendMessage($message, $request->to));
 
-        return response()->json([
-            'message' => $message,
-            'status' => Response::HTTP_CREATED
-        ], Response::HTTP_CREATED); 
+        Event::dispatch(new SendMessage($message, $request->to)); 
     }
 
     /**
@@ -88,6 +59,17 @@ class MessageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
         //
     }
@@ -113,5 +95,31 @@ class MessageController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function listMessages(User $user)
+    {
+        $userFrom = Auth::user()->id;
+        $userTo = $user->id;
+
+        $messages = Message::where(
+            function($query) use ($userFrom, $userTo) { 
+                $query->where([
+                    'from' => $userFrom,
+                    'to' => $userTo
+                ]);
+            }
+        )->orWhere(
+            function($query) use ($userFrom, $userTo) {
+                $query->where([
+                    'from' => $userTo,
+                    'to' => $userFrom
+                ]);
+            }
+        )->orderBy('created_at','ASC')->get();
+
+        return response()->json([
+            'messages' => $messages
+        ],Response::HTTP_OK);
     }
 }

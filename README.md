@@ -1,3 +1,12 @@
+Chat Realtime Desenvolvido com Laravel 8 e VueJS 3.<br>
+No Laravel é utilizado Jetstream com Inertia.js, Sanctum, Laravel WebSockets, Laravel Echo.<br>
+No VueJS é utilizado Vuex e Vuex-persistedstate.<br>
+Para estilização utilizamos o Tailwind CSS.
+<hr>
+
+![image](https://user-images.githubusercontent.com/44420212/125375346-47be8a80-e35f-11eb-8854-e1b7693384e2.png)
+
+<hr>
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
@@ -44,8 +53,6 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[DevSquad](https://devsquad.com)**
 - **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
 - **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
 
 ## Contributing
 

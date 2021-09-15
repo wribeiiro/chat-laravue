@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-use Inertia\Inertia;
-use Auth;
+use Illuminate\Support\ServiceProvider;
+
+use Illuminate\Support\Facades\Auth; // Importando o Auth
+use Inertia\Inertia; // Importando o Inertia
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,7 +29,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        Inertia::share('auth.user', function() {
+        // Abaixo foi criado para termos uma variável dentro do Inertia para que possamos
+        // resgatar os dados  referente ao usuário logado e usuá-los dentro do componente Vue (através da variável $page)
+        Inertia::share('auth.user', function(){
             return Auth::user();
         });
     }

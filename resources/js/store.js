@@ -1,18 +1,27 @@
 import axios from 'axios';
-import { Store } from 'vuex';
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
-export default new Store({
-    state: {
-        user: {}
-    },
-    mutations: {
-        setUserState: (state, value) => state.user = value
-    },
-    actions: {
-        userStateAction: ({commit}) => {
-            axios.get('api/user/me').then(response => {
-                commit('setUserState', response.data.user);
-            })
-        }
+const state = {
+    user: {}
+}
+
+const mutations = {
+    setUserState: (state, value) => state.user = value
+}
+
+const actions = {
+    userStateAction: async ({commit}) => {
+        await axios.get('api/user/me').then(response => {
+            const userResponse = response.data.user;
+            commit('setUserState', userResponse);
+        })
     }
+}
+
+export default createStore({
+    state,
+    mutations,
+    actions,
+    plugins: [createPersistedState()]
 })

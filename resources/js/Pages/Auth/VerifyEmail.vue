@@ -1,6 +1,4 @@
 <template>
-    <Head title="Email Verification" />
-
     <jet-authentication-card>
         <template #logo>
             <jet-authentication-card-logo />
@@ -20,26 +18,22 @@
                     Resend Verification Email
                 </jet-button>
 
-                <Link :href="route('logout')" method="post" as="button" class="underline text-sm text-gray-600 hover:text-gray-900">Log Out</Link>
+                <inertia-link :href="route('logout')" method="post" as="button" class="underline text-sm text-gray-600 hover:text-gray-900">Log Out</inertia-link>
             </div>
         </form>
     </jet-authentication-card>
 </template>
 
 <script>
-    import { defineComponent } from 'vue'
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue'
-    import JetButton from '@/Jetstream/Button.vue'
-    import { Head, Link } from '@inertiajs/inertia-vue3';
+    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
+    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
+    import JetButton from '@/Jetstream/Button'
 
-    export default defineComponent({
+    export default {
         components: {
-            Head,
             JetAuthenticationCard,
             JetAuthenticationCardLogo,
             JetButton,
-            Link,
         },
 
         props: {
@@ -63,5 +57,5 @@
                 return this.status === 'verification-link-sent';
             }
         }
-    })
+    }
 </script>

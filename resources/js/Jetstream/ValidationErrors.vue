@@ -9,9 +9,7 @@
 </template>
 
 <script>
-    import { defineComponent } from 'vue'
-
-    export default defineComponent({
+    export default {
         computed: {
             errors() {
                 return this.$page.props.errors
@@ -21,5 +19,5 @@
                 return Object.keys(this.errors).length > 0;
             },
         }
-    })
+    }
 </script>
